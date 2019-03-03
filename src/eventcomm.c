@@ -860,32 +860,6 @@ event_query_touch(InputInfoPtr pInfo)
     }
 #endif
 
-static void
-event_query_led(InputInfoPtr pInfo)
-{
-    SynapticsPrivate *priv = (SynapticsPrivate *)pInfo->private;
-
-    priv->synpara.has_led = !access(SYNAPTICS_LED_SYS_FILE, W_OK);
-}
-
-static void EventUpdateLED(InputInfoPtr pInfo)
-{
-    SynapticsPrivate *priv = (SynapticsPrivate *)pInfo->private;
-
-    if (priv->synpara.has_led) {
-        char *val = priv->synpara.led_status ? "255" : "0";
-        int fd = open(SYNAPTICS_LED_SYS_FILE, O_WRONLY);
-        int err;
-
-        if (fd < 0)
-            return;
-        err = write(fd, val, strlen(val));
-        close(fd);
-        if (err < 0)
-            xf86IDrvMsg(pInfo, X_WARNING, "can't write LED value %s\n", val);
-    }
-}
-
     if (libevdev_has_event_code(dev, EV_ABS, ABS_MT_SLOT)) {
         for (axis = ABS_MT_SLOT + 1; axis <= ABS_MT_MAX; axis++) {
             if (!libevdev_has_event_code(dev, EV_ABS, axis))
@@ -976,6 +950,32 @@ static void EventUpdateLED(InputInfoPtr pInfo)
                     break;
             }
         }
+    }
+}
+
+static void
+event_query_led(InputInfoPtr pInfo)
+{
+    SynapticsPrivate *priv = (SynapticsPrivate *)pInfo->private;
+    
+    priv->synpara.has_led = !access(SYNAPTICS_LED_SYS_FILE, W_OK);
+}
+
+static void EventUpdateLED(InputInfoPtr pInfo)
+{
+    SynapticsPrivate *priv = (SynapticsPrivate *)pInfo->private;
+    
+    if (priv->synpara.has_led) {
+        char *val = priv->synpara.led_status ? "255" : "0";
+        int fd = open(SYNAPTICS_LED_SYS_FILE, O_WRONLY);
+        int err;
+        
+        if (fd < 0)
+            return;
+        err = write(fd, val, strlen(val));
+        close(fd);
+        if (err < 0)
+            xf86IDrvMsg(pInfo, X_WARNING, "can't write LED value %s\n", val);
     }
 }
 
