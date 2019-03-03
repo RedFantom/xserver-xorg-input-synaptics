@@ -489,7 +489,7 @@ set_softbutton_areas_option(InputInfoPtr pInfo, char *option_name, int offset)
     next_num = option_string;
 
     for (i = 0; i < 8 && *next_num != '\0'; i++) {
-        double value = strtod(next_num, &end_str, 0);
+        double value = strtod(next_num, &end_str);
 
         if (value > INT_MAX || value < -INT_MAX)
             goto fail;
