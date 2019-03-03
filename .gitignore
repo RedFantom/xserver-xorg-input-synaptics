@@ -56,4 +56,11 @@ dkms.conf
 
 # Package building
 /.pc
+*.cache
+/build
+*~
+debian/.debhelper
+debian/autoreconf.after
+debian/autoreconf.before
+*.log
 
