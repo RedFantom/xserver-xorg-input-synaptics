@@ -54,3 +54,6 @@ dkms.conf
 # CLion
 /.idea
 
+# Package building
+/.pc
+
