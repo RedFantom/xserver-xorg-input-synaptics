@@ -651,7 +651,7 @@ SetProperty(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop,
     else if (property == prop_led_double_tap) {
         if (prop->size != 1 || prop->format != 8 || prop->type != XA_INTEGER)
             return BadMatch;
-    
+
         para->led_double_tap = *(CARD8*)prop->data;
     }
     else if (property == prop_gestures) {
@@ -825,7 +825,7 @@ SetProperty(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop,
     else if (property == prop_led_status) {
         if (prop->size != 1 || prop->format != 8 || prop->type != XA_INTEGER)
             return BadMatch;
-        
+
         if (para->has_led) {
             para->led_status = *(BOOL*)prop->data;
         if (priv->proto_ops && priv->proto_ops->UpdateLED)
@@ -883,4 +883,5 @@ SetProperty(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop,
     }
 
     return Success;
+    }
 }
